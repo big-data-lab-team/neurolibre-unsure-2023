@@ -1,0 +1,19 @@
+
+\section*{Introduction}
+% \Ines{
+% Moreover, numerical uncertainty provides a measure of the uncertainty of models such as CNNs as a whole, as the computational perturbations introduced impact model performance. 
+A motivating factor to study numerical uncertainty in neuroimaging is to establish measures of reliability in the tools observed, particularly in light of the reproducibility crisis \cite{botvinik2020variability,Fanelli_2017,baker_2016}.
+% }
+Numerical uncertainty is key to the robustness of
+neuroimaging analyses. Small computational perturbations introduced in execution environments--- including operating systems,
+hardware architecture, and parallelization---may amplify throughout analytical pipelines and result
+in substantial differences in the final outcome of analyses~\cite{gronenschild2012effects,glatard2015reproducibility}. Such
+instabilities have been observed across many different tools and imaging modalities~\cite{salari2021accurate,kiar2021numerical}, and are likely to impact the reproducibility and robustness of analyses.
+
+Convolutional Neural Networks (CNNs) are increasingly adopted for  registration~\cite{hoffmann2021synthmorph,iglesias2023ready,balakrishnan2019tmi} and segmentation~\cite{roy2019quicknat,henschel2020fastsurfer,jog2019psacnn,li2017compactness} of structural MRIs. 
+% \TG{Inés: add references from your comp exam}
+% \Ines{I haven't read/discussed any papers on surface extraction in my comp exam -- add in more references for registration + segmentation?}
+Once trained, CNNs are orders of magnitude faster than traditional image-processing methods,
+achieve comparable accuracy, and seem to exhibit better generalizability to image modalities and orientations. However, the numerical uncertainty associated with CNN predictions in neuroimaging remains largely unexplored. While previous works suggested that CNNs might be subject to numerical instability~\cite{higham2002accuracy,kloberdanz2022deepstability,chakraborty2021survey}, it is unclear how such instabilities manifest in specific CNN architectures used in structural brain MRI, and how the resulting numerical uncertainty compares to the one of traditional methods.
+
+This paper measures the numerical uncertainty associated with CNN inference in neuroimaging, focusing specifically on non-linear registration and whole-brain segmentation of structural MRIs. To do so, it applies Random Rounding (RR)~\cite{forsythe1959reprint,fevotte2016verrou}---a practical stochastic arithmetic technique to estimate numerical uncertainty---to state-of-the-art CNN models SynthMorph~\cite{hoffmann2021synthmorph} and FastSurfer~\cite{henschel2020fastsurfer}, and compare their numerical uncertainty to the one measured from the FreeSurfer~\cite{fischl2002whole} ``recon-all" reference neuroimaging tool.

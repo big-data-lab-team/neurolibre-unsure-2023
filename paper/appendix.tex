@@ -1,0 +1,175 @@
+\section{Image parameters}
+\label{appendix:data}
+% \vspace*{-2cm}
+% test test
+% \vspace*{-2cm}
+
+\begin{table}[ht!]
+% \vspace*{-12cm}
+
+\centering
+\begin{tabular}{|c c c c c|} 
+ \hline
+ Subject & Image Dimension & Voxel Resolution & Data Type & Processing Status \\ [0.5ex] 
+ \hline\hline
+sub-0027393 & (256, 256, 220) & (0.94, 0.94, 1.00) & float32 & Linear Registration Fail \\
+sub-0026196 & (176, 256, 256) & (1.00, 0.98, 0.98) & int16 & Success \\
+sub-0026044 & (176, 256, 256) & (1.00, 0.98, 0.98) & float32 & Success \\
+sub-0027174 & (176, 256, 256) & (1.00, 0.98, 0.98) & float32 & Success \\
+sub-0027268 & (256, 256, 156) & (1.00, 1.00, 1.00) & int16 & Success \\
+sub-0027294 & (128, 256, 256) & (1.33, 1.00, 1.00) & float32 & Success \\
+sub-0026036 & (160, 480, 512) & (1.20, 0.50, 0.50) & float32 & FastSurfer Segmentation Fail \\
+sub-0026017 & (256, 256, 224) & (1.00, 1.00, 1.00) & float32 & Success \\
+sub-0025507 & (128, 256, 256) & (1.33, 1.00, 1.00) & float32 & Success \\
+sub-0025879 & (144, 256, 256) & (1.33, 1.00, 1.00) & float32 & Success \\
+sub-0025350 & (256, 256, 220) & (0.94, 0.94, 1.00) & float32 & Success \\
+sub-0025930 & (176, 256, 256) & (1.00, 1.00, 1.00) & float32 & Success \\
+sub-0027214 & (176, 256, 256) & (1.00, 0.98, 0.98) & float32 & Success \\
+sub-0025555 & (128, 256, 256) & (1.33, 1.00, 1.00) & int16 & Success \\
+sub-0025436 & (176, 256, 256) & (1.00, 0.98, 0.98) & float32 & Success \\
+sub-0025993 & (176, 256, 256) & (1.00, 1.00, 1.00) & float32 & Success \\
+sub-0026175 & (176, 240, 256) & (1.00, 1.00, 1.00) & int16 & Success \\
+sub-0025248 & (208, 256, 176) & (1.00, 1.00, 1.00) & float32 & Success \\
+sub-0025531 & (160, 240, 256) & (1.20, 0.94, 0.94) & float32 & Success \\
+sub-0025011 & (128, 256, 256) & (1.33, 1.00, 1.00) & float32 & Success \\
+sub-0027012 & (192, 256, 256) & (1.00, 1.00, 1.00) & float32 & Success \\
+sub-0027110 & (176, 256, 256) & (1.00, 1.00, 1.00) & int16 & Success \\
+sub-0025362 & (160, 240, 256) & (0.99, 1.00, 1.00) & float32 & Success \\
+sub-0025604 & (256, 256, 170) & (1.00, 1.00, 1.00) & float32 & Success \\
+sub-0027191 & (176, 256, 256) & (1.00, 0.98, 0.98) & float32 & Success \\
+sub-0003002 & (176, 256, 256) & (1.00, 1.00, 1.00) & int16 & Success \\
+sub-0026055 & (176, 256, 256) & (1.00, 1.00, 1.00) & float32 & Success \\
+sub-0025462 & (188, 256, 256) & (1.00, 1.00, 1.00) & float32 & Success \\
+sub-0025631 & (176, 256, 256) & (1.00, 1.00, 1.00) & float32 & Success \\
+sub-0025598 & (128, 256, 256) & (1.33, 1.00, 1.00) & float32 & Success \\
+sub-2842950 & (192, 256, 256) & (1.00, 1.00, 1.00) & int16 & Success \\
+sub-0027094 & (128, 256, 256) & (1.33, 1.00, 1.00) & int16 & Success \\
+sub-0025406 & 160, 240, 256) & (1.00, 1.00, 1.00) & float32 & Success \\
+sub-0027434 & (240, 320, 320) & (0.70, 0.70, 0.70) & float32 & Linear Registration Fail \\
+sub-0027236 & (176, 256, 256) & (0.99, 1.00, 1.00) & float32 & Success \\
+ \hline
+\end{tabular}
+\caption{Subjects sampled in the CoRR dataset. Subjects listed as failures were excluded from analysis}
+\label{table:corr_subjects}
+\end{table}
+
+\section{Non-linear Registration Uncertainty Maps for 32 Subjects}
+\label{appendix:non-linear-registration}
+
+\begin{tabular}{cM{40mm}M{40mm}M{40mm}}
+    \toprule
+       Subject  & Linearly Registered MRI & FreeSurfer recon-all & SynthMorph \\
+    \midrule
+    \multirow{5}{*}{0026196} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0026196.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 5.85} \\ \addimg{sub-0026196}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 10.58} \\ \addimg{sub-0026196}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.01} \\ \addimg{sub-0026196}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.48} \\ \addimg{sub-0026196}{sm}{warp} \\ \end{tabular} \\
+    
+    \multirow{5}{*}{0026044} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0026044.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 6.27} \\ \addimg{sub-0026044}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 9.45} \\ \addimg{sub-0026044}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.96} \\ \addimg{sub-0026044}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.60} \\ \addimg{sub-0026044}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0027174} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0027174.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 6.56} \\ \addimg{sub-0027174}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 9.23} \\ \addimg{sub-0027174}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.92} \\ \addimg{sub-0027174}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.65} \\ \addimg{sub-0027174}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0027268} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0027268.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 7.10} \\ \addimg{sub-0027268}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 11.49} \\ \addimg{sub-0027268}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.48} \\ \addimg{sub-0027268}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.57} \\ \addimg{sub-0027268}{sm}{warp} \\ \end{tabular} \\
+
+    % \bottomrule
+  \end{tabular}
+
+  \begin{tabular}{cM{40mm}M{40mm}M{40mm}}
+    % \toprule
+    %    Subject  & Linearly Registered MRI & FreeSurfer recon-all & SynthMorph \\
+    % \midrule
+    \multirow{5}{*}{0027294} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0027294.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 7.98} \\ \addimg{sub-0027294}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 10.26} \\ \addimg{sub-0027294}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.54} \\ \addimg{sub-0027294}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.71} \\ \addimg{sub-0027294}{sm}{warp} \\ \end{tabular} \\
+    
+    \multirow{5}{*}{0026017} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0026017.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 8.92} \\ \addimg{sub-0026017}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 11.14} \\ \addimg{sub-0026017}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.87} \\ \addimg{sub-0026017}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.49} \\ \addimg{sub-0026017}{sm}{warp} \\ \end{tabular} \\
+    
+    \multirow{5}{*}{0025507} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025507.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 9.00} \\ \addimg{sub-0025507}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 11.51} \\ \addimg{sub-0025507}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.65} \\ \addimg{sub-0025507}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.65} \\ \addimg{sub-0025507}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0025879} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025879.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 9.09} \\ \addimg{sub-0025879}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 10.69} \\ \addimg{sub-0025879}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.53} \\ \addimg{sub-0025879}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.57} \\ \addimg{sub-0025879}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0025350} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025350.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 9.36} \\ \addimg{sub-0025350}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 11.33} \\ \addimg{sub-0025350}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.38} \\ \addimg{sub-0025350}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.34} \\ \addimg{sub-0025350}{sm}{warp} \\ \end{tabular} \\
+
+    % \bottomrule
+  \end{tabular}
+
+  \begin{tabular}{cM{40mm}M{40mm}M{40mm}}
+    % \toprule
+    %    Subject  & Linearly Registered MRI & FreeSurfer recon-all & SynthMorph \\
+    % \midrule
+    \multirow{5}{*}{0025930} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025930.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 9.60} \\ \addimg{sub-0025930}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 11.83} \\ \addimg{sub-0025930}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.37} \\ \addimg{sub-0025930}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.51} \\ \addimg{sub-0025930}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0027214} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0027214.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 9.89} \\ \addimg{sub-0027214}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 10.29} \\ \addimg{sub-0027214}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.86} \\ \addimg{sub-0027214}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.53} \\ \addimg{sub-0027214}{sm}{warp} \\ \end{tabular} \\
+    
+    \multirow{5}{*}{0025555} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025555.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 10.34} \\ \addimg{sub-0025555}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 11.78} \\ \addimg{sub-0025555}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.53} \\ \addimg{sub-0025555}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.47} \\ \addimg{sub-0025555}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0025436} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025436.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 10.68} \\ \addimg{sub-0025436}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 13.66} \\ \addimg{sub-0025436}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.09} \\ \addimg{sub-0025436}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.46} \\ \addimg{sub-0025436}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0025993} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025993.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 10.77} \\ \addimg{sub-0025993}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 10.15} \\ \addimg{sub-0025993}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 20.07} \\ \addimg{sub-0025993}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.62} \\ \addimg{sub-0025993}{sm}{warp} \\ \end{tabular} \\
+
+    % \bottomrule
+  \end{tabular}
+
+
+    \begin{tabular}{cM{40mm}M{40mm}M{40mm}}
+    % \toprule
+    %    Subject  & Linearly Registered MRI & FreeSurfer recon-all & SynthMorph \\
+    % \midrule
+    \multirow{5}{*}{0026175} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0026175.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 10.81} \\ \addimg{sub-0026175}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 11.42} \\ \addimg{sub-0026175}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.37} \\ \addimg{sub-0026175}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.54} \\ \addimg{sub-0026175}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0025248} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025248.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 11.26} \\ \addimg{sub-0025248}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 12.14} \\ \addimg{sub-0025248}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.51} \\ \addimg{sub-0025248}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.56} \\ \addimg{sub-0025248}{sm}{warp} \\ \end{tabular} \\
+    
+    \multirow{5}{*}{0025531} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025531.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 11.85} \\ \addimg{sub-0025531}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 10.99} \\ \addimg{sub-0025531}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.68} \\ \addimg{sub-0025531}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.59} \\ \addimg{sub-0025531}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0025011} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025011.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 12.41} \\ \addimg{sub-0025011}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 12.37} \\ \addimg{sub-0025011}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.27} \\ \addimg{sub-0025011}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.69} \\ \addimg{sub-0025011}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0027012} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0027012.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 12.97} \\ \addimg{sub-0027012}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 11.88} \\ \addimg{sub-0027012}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.86} \\ \addimg{sub-0027012}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.59} \\ \addimg{sub-0027012}{sm}{warp} \\ \end{tabular} \\
+
+    % \bottomrule
+  \end{tabular}
+
+
+      \begin{tabular}{cM{40mm}M{40mm}M{40mm}}
+    % \toprule
+    %    Subject  & Linearly Registered MRI & FreeSurfer recon-all & SynthMorph \\
+    % \midrule
+    \multirow{5}{*}{0027110} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0027110.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 13.20} \\ \addimg{sub-0027110}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 16.39} \\ \addimg{sub-0027110}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.27} \\ \addimg{sub-0027110}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.52} \\ \addimg{sub-0027110}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0025362} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025362.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 13.56} \\ \addimg{sub-0025362}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 11.71} \\ \addimg{sub-0025362}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.07} \\ \addimg{sub-0025362}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.61} \\ \addimg{sub-0025362}{sm}{warp} \\ \end{tabular} \\
+    
+    \multirow{5}{*}{0025604} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025604.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 15.01} \\ \addimg{sub-0025604}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 11.11} \\ \addimg{sub-0025604}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.63} \\ \addimg{sub-0025604}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.52} \\ \addimg{sub-0025604}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0027191} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0027191.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 15.24} \\ \addimg{sub-0027191}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 12.22} \\ \addimg{sub-0027191}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits:19.95} \\ \addimg{sub-0027191}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.59} \\ \addimg{sub-0027191}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0003002} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0003002.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 17.74} \\ \addimg{sub-0003002}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 16.90} \\ \addimg{sub-0003002}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.40} \\ \addimg{sub-0003002}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.60} \\ \addimg{sub-0003002}{sm}{warp} \\ \end{tabular} \\
+
+    % \bottomrule
+  \end{tabular}
+
+        \begin{tabular}{cM{40mm}M{40mm}M{40mm}}
+    % \toprule
+    %    Subject  & Linearly Registered MRI & FreeSurfer recon-all & SynthMorph \\
+    % \midrule
+    \multirow{5}{*}{0026055} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0026055.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 18.33} \\ \addimg{sub-0026055}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 15.77} \\ \addimg{sub-0026055}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.23} \\ \addimg{sub-0026055}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.66} \\ \addimg{sub-0026055}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0025462} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025462.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 23.00} \\ \addimg{sub-0025462}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 23.00} \\ \addimg{sub-0025462}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.91} \\ \addimg{sub-0025462}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.37} \\ \addimg{sub-0025462}{sm}{warp} \\ \end{tabular} \\
+    
+    \multirow{5}{*}{0025631} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025631.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 23.00} \\ \addimg{sub-0025631}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 23.00} \\ \addimg{sub-0025631}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.70} \\ \addimg{sub-0025631}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.58} \\ \addimg{sub-0025631}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0025598} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025598.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 23.00} \\ \addimg{sub-0025598}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 23.00} \\ \addimg{sub-0025598}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.42} \\ \addimg{sub-0025598}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.63} \\ \addimg{sub-0025598}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{2842950} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-2842950.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 23.00} \\ \addimg{sub-2842950}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 23.00} \\ \addimg{sub-2842950}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.49} \\ \addimg{sub-2842950}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.59} \\ \addimg{sub-2842950}{sm}{warp} \\ \end{tabular} \\
+
+    % \bottomrule
+  \end{tabular}
+
+          \begin{tabular}{cM{40mm}M{40mm}M{40mm}}
+    % \toprule
+    %    Subject  & Linearly Registered MRI & FreeSurfer recon-all & SynthMorph \\
+    % \midrule
+    \multirow{5}{*}{0027094} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0027094.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 23.00} \\ \addimg{sub-0027094}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 23.00} \\ \addimg{sub-0027094}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.40} \\ \addimg{sub-0027094}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.60} \\ \addimg{sub-0027094}{sm}{warp} \\ \end{tabular} \\
+
+    \multirow{5}{*}{0025406} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0025406.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 23.00} \\ \addimg{sub-0025406}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 23.00} \\ \addimg{sub-0025406}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.44} \\ \addimg{sub-0025406}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.46} \\ \addimg{sub-0025406}{sm}{warp} \\ \end{tabular} \\
+    
+    \multirow{5}{*}{0027236} & \multirow{2}{*}{\includegraphics[width=11em]{figures3/linear_reg/sub-0027236.eps}} & \begin{tabular}{cM{40mm}}         \scriptsize{Mean Significant Bits: 23.00} \\ \addimg{sub-0027236}{fs}{reg} \\ \scriptsize{Mean Significant Bits: 23.00} \\ \addimg{sub-0027236}{fs}{warp} \\ \end{tabular} & \begin{tabular}{cM{40mm}} \scriptsize{Mean Significant Bits: 19.21} \\ \addimg{sub-0027236}{sm}{reg} \\ \scriptsize{Mean Significant Bits: 18.59} \\ \addimg{sub-0027236}{sm}{warp} \\ \end{tabular} \\
+    \bottomrule
+  \end{tabular}
+  \centering
+    \includegraphics[width=0.6\textwidth]{figures3/colorbar.eps}
+    \captionof{table}{Nonlinear registration uncertainty maps for images and their respective warp fields across FreeSurfer recon-all and SynthMorph. The displayed warp fields are averaged across the x, y and z axes. Due to required cropping of image dimensions, the registered brains do not have the same dimensions between SynthMorph and FreeSurfer, moreover the difference in methods produced differently sized warp fields.}
+

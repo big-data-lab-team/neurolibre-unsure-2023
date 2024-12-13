@@ -1,0 +1,162 @@
+\section*{Materials \& Methods}
+
+We measured the numerical uncertainty of CNN models SynthMorph (non-linear registration) and FastSurfer (whole-brain segmentation) using RR. We applied these models to 35 subjects randomly selected in the CoRR dataset, using the FreeSurfer recon-all pipeline as a baseline for numerical uncertainty comparison. 
+
+\subsection{Random Rounding}
+% \Yohan{Do we need to introduce MCA and its modes since we only use RR?}
+
+% \TG{I contracted this paragraph, please confirm that it is still correct.}
+
+Random Rounding (RR)~\cite{forsythe1959reprint} is a form of Monte-Carlo Arithmetic (MCA)~\cite{parker1997monte} that simulates rounding errors by applying the following perturbation to all floating-point (FP) operations of an application:
+\[
+  random\_rounding(x \circ y) = round(inexact(x \circ y))
+\]
+where $x$ and $y$ are FP numbers, $\circ$ is an arithmetic operation, and $inexact$ is a random perturbation defined at a given virtual precision:
+\[
+inexact(x)=x+2^{e_{x}-t}\xi
+\]
+where \(e_{x}\) is the exponent in the FP representation of \(x\), \(t\) is the virtual precision, and \(\xi\) is a random uniform variable of \((-\frac{1}{2},\frac{1}{2})\).
+To measure numerical uncertainty, we applied a perturbation of 1 ulp (unit of least precision, a.k.a the spacing between two consecutive FP numbers), which corresponds to a virtual precision of $t=24$ bits for single-precision and $t=53$ bits for double-precision.
+
+We applied RR to the CNN models using Verrou~\cite{fevotte2016verrou}~\cite{verrou-url}, a tool that implements MCA through dynamic binary instrumentation with Valgrind~\cite{nethercote2007valgrind}, without needing to modify or recompile the source code.  We instrumented the entire executables with RR, additionally using Verrou's custom libmath implementation named Interlibmath to avoid incorrect random perturbations in mathematical functions. We applied RR to FreeSurfer using ``fuzzy libmath"~\cite{salari2021accurate}, a version of the GNU mathematical library instrumented with the Verificarlo~\cite{denis2015verificarlo} compiler following the same principle as Verrou's Interlibmath instrumentation.
+% REMOVE?
+% Verrou minimises overhead by carefully implementing the rounding operations, random number generations and using fused-multiply-add (FMA) instructions when able. 
+% However, the overall slowdown of using Verrou is usually between x10 and x20, which is not insignificant when compared to Verificarlo’s smaller observed slowdown. This is caused by Verrou’s serialisation of multithreaded code while Verificarlo supports multithreaded code.
+
+\subsection{Numerical Uncertainty Metrics}
+
+% \Yohan{Do you use the General or the CNH method for computing the significant bits?}
+% \TG{Ines and Vin: please confirm}
+% \Vin{I used General method on my part}
+
+We quantified numerical uncertainty by calculating the number of significant bits across multiple independent RR samples. The number of significant bits is informally defined as the number of bits in common between RR samples for a given FP value. We estimated the number of significant bits using the general non-parametric method described in~\cite{sohier2021confidence} and implemented in the \texttt{significant\_digits} package~\cite{significantdigits-url}.
+%as we do not assume the samples follow Gaussian law as required by the Centered Normal Hypothesis method. 
+% \Ines{General case used for Freesurfer + SynthMorph addressed here}
+Given an RR sample $X_i$ ($i \leq n$), this method computes the significance  $S^k_i$ of the $k^{th}$ bit in the mantissa of $X_i$ as:
+\[
+S^k_i = \mathbbm{1}_{|Z_i |<2^{-k}}
+\]
+where $Z_i=X_i-x_\mathrm{IEEE}$ and $x_\mathrm{IEEE}$ is the unperturbed result computed with IEEE.
+%754 standard (without RR). 
+The $k^{th}$ bit in the mantissa is considered significant if the absolute value of $Z_i$ is less than $2^{-k}$. The number of significant bits across samples, $\hat{s_b}$, is then obtained as the maximal bit index that is significant for all samples:
+\[\hat{s_{b}} = \textnormal{max} \left\{ k \in \llbracket 1, m \rrbracket \textnormal{ such that } \forall i \in \llbracket 1, n \rrbracket,\  S^{k}_{i}=\mathbbm{1}\right\} 
+\]
+where $m$ is the size of the mantissa, i.e., 53 bits for double precision numbers and 24 bits for single precision numbers.
+% The method also provides confidence intervals at varying degrees of confidence and probability~\cite{sohier2021confidence}.
+A value of 0 significant bits means that $X$ bears no information while a value of $m$ means that it has maximal information given the FP format used.
+The difference between the maximal and achieved values quantifies the information loss resulting from numerical uncertainty.
+% Significant bits can be converted to significant digits if necessary, such that the maximal number of significant digits for double-precision numbers is 15.95 given $53\log_{10}(2)$ and the maximal number of significant digits for single-precision numbers is 7.23 given $24\log_{10}(2)$.
+
+The number of significant bits is a versatile metric that applies to any program that produces results encoded as FP values. 
+This is, however, not the case of segmentation tools that generally produce categorical variables encoded as integers representing segmentation labels 
+% \Ines{
+despite the use of intermediate FP operations.
+% }. 
+Therefore, 
+%\Ines{
+in order to assess the impact of stochastic rounding in these intermediate FP operations
+% } 
+we used the minimum Sørensen-Dice scores computed pairwise across RR samples as uncertainty metric for segmentations. In addition, to have a more local uncertainty metric for segmentation results, we defined an entropy metric at each voxel:
+\begin{equation}
+    \label{eq:entropy}
+    E = -\sum_{i=1}^{r}p_i\ln p_i
+\end{equation}
+where $r$ is the number of segmented regions, and $p_i$ is the probability of region $i$ at the voxel, computed across $n$ Random Rounding samples. 
+% \TG{Ines, please check that this is the formula that you used (including the base used for the log) and modify accordingly} 
+The entropy is 0 when the voxel is labeled with the same region across all RR samples, and it is maximal when the voxel is labeled differently for each RR sample.
+
+\subsection{Non-Linear Registration}
+
+
+
+% \TG{Summarize:
+% \begin{itemize}
+% \item The architecture, possibly with a diagram if space permits.
+% \item The data on which it was trained.
+% \item Performance evaluation results for the model
+% \item The inputs on which we applied the model (template, linear registration from FS, cropping/reshaping).
+% \end{itemize}
+% }
+
+\paragraph{SynthMorph}\cite{hoffmann2021synthmorph} is a 3D convolutional U-Net~\cite{ronneberger2015u} that performs non-linear image registration robustly across MRI contrasts. The encoding section of the U-Net consists of 4 convolutional blocks, 
+%each comprised of a stride-2 convolution with 256 filters and a leaky ReLU layer. 
+while the decoding section consists of 3 blocks 
+%that each include a stride-1 convolution, an upsampling layer, and 
+with a skip connection to its respective encoding block. SynthMorph was trained from synthetic label maps created from geometric shapes from which images were generated with various contrasts, deformations, and artifacts. A contrast-invariant loss that measures label overlap was used to optimize model performance. SynthMorph's registration accuracy was shown to outperform state-of-the-art registration methods both within and across contrasts. We applied the SynthMorph ``sm-brains" pre-trained model available on GitHub~\cite{synthmorph-github} to the linearly registered image produced by FreeSurfer recon-all (output of recon-all's \texttt{-canorm} step), using the MNI305 atlas as reference image. The subject and atlas images were cropped through visual inspection to match the 160 x 192 x 224 dimension required by the model, and intensities were min-max scaled to [0-1]. We applied Verrou directly to the sm-brains model, by instrumenting the entirety of the model and using Verrou's Interlibmath implementation.
+SynthMorph takes a couple of minutes to run, but when instrumented with Verrou, the runtime increased to a span of 2-3 days.
+% \Yohan{It is not clear what is instrumented with Verrou (arithmetic operations, libm, both?) for each pipeline. We shoud have a name for each instrumentation configuration. I would introduce FreeSurfer before SynthMorph.} 
+% \TG{Freesurfer is the baseline while the other models are really the ones that are tested here. For this reason I think it's better to keep Freesurfer last. Is the text clearer on instrumentation now?}
+% using Verrou's libmath mode, and having excluded all functions from the libm and libquadmath libraries as the former would cause the program to crash and the latter needs to be excluded to use Verrou's libmath mode. Furthermore, we also used the SynchroLib library to run Verrou only on the registration.~\TG{Vin: add list and explain why. Add any other ``secret sauce" required to make Verrou work with SynthMorph}.
+
+\paragraph{FreeSurfer} ``recon-all"~\cite{fischl2002whole} is a widely-used neuroimaging pipeline that implements spatial normalization to a brain template, whole-brain segmentation, and cortical surface extraction. The non-linear registration algorithm (mri\_ca\_register tool) minimizes through gradient descent an error functional that includes an intensity term, a topology constraining one, a metric preservation term,  a smoothness term, and a label term~\cite{fischl2004sequence}.
+% \vspace*{-0.4cm}
+% \[J^{t+1}(x) = J^t (x + k \bigtriangledown J).\]
+% \vspace*{-0.7cm}
+% \Ines{Cut down?}\TG{I cut down the details on gradient descent as this is common knowledge. The key was to mention ``gradient descent". Are you sure it's not stochastic gradient descent btw?}
+% Minimization through typical gradient descent by setting time step $k$ to a small value is costly so multiscale line minimization is adopted in order to find the optimal $k$. 
+% The optimal scale for k $k_1$ is determined by sampling orders of magnitude intervals in the range of the smallest to largest vertex movements and selecting that which best minimizes $J$. 
+% The value of $k$ is then determined by sampling the best time step value from 0,the aforementioned $k_1$, $k_2=1.5*k_1$, $k_3=0.5*k_1$, and $k_4$, a quadratic with $k_1, k_2 and k_3$ 
+% \cite{fischl1999cortical}.
+% \TG{it would be nice to mention the minimization algorithm used}
+We first ran recon-all on all the subjects with steps \texttt{--motioncor --talairach --nuintensitycor --normalization --skullstrip --gcareg --canorm} without RR, to obtain the linear registration used as input of SynthMorph. 
+Then we ran the FreeSurfer recon-all step \texttt{--careg} that implements non-linear registration using our FreeSurfer version instrumented with fuzzy libmath. This command typically takes 3 hours to run, but when instrumented with fuzzy libmath, the runtime increased to a span of 6 hours.
+%\TG{It is interesting to note that the numerical instability found in FreeSurfer is simply a lower bound on what instability can be found in the FreeSurfer non-linear registration task as only the libmath library is instrumented with MCA. Due to time constraints, the entirety of FreeSurfer could not be instrumented with MCA, but future work would probably demonstrate an even larger difference between the numerical stability of FreeSurfer and SynthMorph.}
+% Then, we applied Verrou to the \TG{xxx} FreeSurfer command that implements non-linear registration, using Verrou's \TG{libmath} mode, and having blacklisted functions~\TG{Ines: add list and explain why. Add any other ``secret sauce" required to make Verrou work with FreeSurfer}.
+
+% \Ines{In order to compare the numerical instability in the image registration task, the images were first preprocessed with FreeSurfer to perform motion correction, non-parametric non-uniform intensity normalisation, affine transformation, intensity normalisation, skull stripping and linear registration. -- Cut down on details?}
+
+\subsection{Whole-Brain Segmentation}
+
+% \TG{Summarize:
+% \begin{itemize}
+% \item The architecture, possibly with a diagram if space permits.
+% \item The data on which it was trained.
+% \item Performance evaluation results for the model
+% \item The inputs on which we applied the model (was it applied directly to the T1 images?).
+% \end{itemize}
+% }
+
+\paragraph{FastSurfer}\cite{henschel2020fastsurfer} is a CNN model that performs whole-brain segmentation, cortical surface reconstruction, fast spherical mapping, and cortical thickness analysis. The FastSurfer CNN is inspired from the QuickNAT model~\cite{roy2019quicknat}, which is composed of three 2D fully convolutional neural networks---each associated with a different 2D slice orientation---that each have the same encoder/decoder U-net architecture with skip connections, unpooling layers and dense connections as QuickNAT.
+% FastSurfer then introduces competition into each block by replacing the concatenation operation with a maxout operation and including a wider image context for each fully-connected layer. 
+% \TG{Summarize performance evaluation compared to other models.}
+The FastSurfer segmentations were shown to surpass state-of-the-art methods, as well as being generalizable to unseen datasets and having better test-retest reliability. We used the pre-trained model from FastSurfer available on GitHub~\cite{fastsurfer-github} and we applied Verrou directly to this model, in the same way it was applied to SynthMorph. 
+FastSurfer typically takes 30 minutes to run, but when instrumented with Verrou, the runtime increased to a span of 16-17 days.
+
+\paragraph{FreeSurfer} recon-all also implements whole-brain segmentation~\cite{fischl2002whole}, through a maximum a-posteriori estimation of the segmentation based on the non-linear registration of the subject image to an atlas.
+% by computing a maximum a posteriori (MAP) estimate of the segmentation $W$, given an input MRI scan $I$ and the transform that registers the image into atlas space $L$, where the goal is to maximize $p(W | I,L)$;
+% \vspace*{-0.4cm}
+% \[p(W | I, L) \propto p(I | W,L)~p(W)
+% \vspace*{-0.1cm}
+% \]
+% $p(I | W,L)$ contains the probability for a given segmentation based off global spatial information and anatomical class statistics about image intensities obtained from the atlas space. $p(W)$ approximates the local spatial relationship between neighboring anatomical classes using anisotropic nonstationary Markov Random Fields.
+% \TG{This description of FS's segmentation method is not accurate enough}
+Due to time constraints, only the subcortical structures and brain tissues were segmented  by FreeSurfer whereas FastSurfer also segmented cortical structures, therefore a mask was applied to FastSurfer's cortical labels to identify them by the super classes ``Left/Right Cerebral Cortex". Only regions common to both were further analysed (see list in Fig.~\ref{fig:fastsurfer_boxplot}).
+Similar to FreeSurfer recon-all's non-linear registration, RR was applied to FreeSurfer recon-all's whole brain segmentation through Verificarlo's fuzzy libmath.
+The FreeSurfer recon-all commands \texttt{--motioncor} up to \texttt{--calabel}, the command that specifically performs subcortical segmentation were run. 
+Typically, the segmentation takes around 4 hours to complete, but with FreeSurfer instrumented with Verificarlo, the runtime increased to 10-12 hours.
+% \TG{explain how you ran recon-all (which command) and how long it took with/without verificarlo}
+% \TG{explain whole-brain segmentation in Freesurfer recon-all and how we perturbed it}
+
+
+
+\subsection{Dataset and processing}
+We used the Consortium for Reliability and Reproducibility (CoRR) dataset~\cite{zuo2014open}, a multi-centric, open resource aimed to evaluate test-retest reliability and reproducibility. We randomly selected 35 T1-weighted MRIs from 35 different subjects, one from each CoRR acquisition site, and accessed them through Datalad~\cite{halchenko2021datalad}~\cite{corr-url-datalad}. The selected images included a range of image dimensions, voxel resolutions and data types (Appendix~\ref{appendix:data}). 
+We excluded 2 subjects that failed linear registration with FreeSurfer recon-all and a third subject that failed segmentation with FastSurfer. 
+Each pipeline or model was run in Singularity containers over 10 RR samples from which we measured numerical uncertainty. Due to long computing times induced by Verrou instrumentation ($\approx$ 17 days per subject) we were only able to get 4 RR 
+samples for FastSurfer, which we complemented with an IEEE (non-RR) sample conceptually identical to an RR sample. 
+
+We processed the data with SynthMorph and FreeSurfer recon-all on the Narval cluster from \'Ecole de Technologie Sup\'erieure (ETS, Montr\'eal), managed by Calcul Qu\'ebec and The Digital Alliance of Canada which include AMD Rome 7502, AMD Rome 7532, and AMD Milan 7413 CPUs with 48 to 64 physical cores, 249~GB to 4000~GB of RAM and Linux kernel 3.10.
+% Intel Broadwell, Skylake and Cascade Lake CPUs
+% \TG{Ines: include hardware details including CPU models, RAM amounts in jobs, Linux/kernel versions}.
+We executed FastSurfer on the slashbin cluster at Concordia University
+with 8 $\times$ compute nodes each with an Intel Xeon Gold 6130 CPU, 250~GB of RAM, and Linux kernel 4.18.0-240.1.1.el8\_lustre.x86\_64.
+
+We used FreeSurfer v7.3.1, SynthMorph v0.2, FastSurfer v2.1.1, Fuzzy v0.9.1, and Singularity/Apptainer v1.1. Verrou v3.21.0 was used for FastSurfer, while Verrou v3.20.0 with a special fix available on GitHub~\cite{verrou-fix} was used for SynthMorph due to compatibility issues between the model and Verrou's Interlibmath.
+The scripts and Dockerfiles for this experiment can be found on GitHub~\cite{scripts}.
+
+% \begin{itemize}
+%   \item Briefly describe the clusters
+%   \item Mention singularity container
+%   \item Mention all software versions
+%   \item Link to Jupyter notebooks and container images
+% \end{itemize}
